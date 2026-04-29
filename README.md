@@ -53,7 +53,7 @@ healthcare-readmission-analysis/
 | 1 | Repo setup, folder structure, dataset download | ✅ Done |
 | 2 | Load & inspect data — shape, types, nulls, value counts | ✅ Done |
 | 3 | Data cleaning pt. 1 — missing values, duplicates, errors | ✅ Done |
-| 4 | Data cleaning pt. 2 — types, renaming, formatting | 🔲 |
+| 4 | Data cleaning pt. 2 — types, renaming, formatting | ✅ Done |
 | 5 | EDA — distributions, basic charts | 🔲 |
 | 6 | Deeper EDA — feature vs readmission relationships | 🔲 |
 | 7 | Feature planning — notes, ideas, no heavy coding | 🔲 |
@@ -71,7 +71,13 @@ healthcare-readmission-analysis/
 - **Source:** UCI ML Repository — Diabetes 130-US Hospitals
 - **Original shape:** 101,766 rows x 50 columns
 - **Cleaned shape:** 101,766 rows x 48 columns
-- **Target:** `readmitted` — whether a patient was readmitted (<30 days, >30 days, or No)
+- **Final dtypes:** 29 category, 13 int64, 6 object
+- **Target:** `readmitted` — whether a patient was readmitted 
+  (<30 days, >30 days, or No)
+- **Class distribution:**
+  - NO: 54,864
+  - >30: 35,545
+  - <30: 11,357
 
 ---
 
@@ -123,6 +129,25 @@ healthcare-readmission-analysis/
 - Final shape: 101,766 rows x 48 columns
 - Zero nulls remaining
 - Saved cleaned dataset to `data/processed/diabetes_cleaned.csv`
+
+**Day 4:**
+- Loaded cleaned dataset from `data/processed/diabetes_cleaned.csv`
+- Converted 29 low-cardinality columns to `category` type to save memory
+  and improve performance
+- Renamed columns for consistency:
+  - `A1Cresult` → `a1c_result`
+  - `patient_nbr` → `patient_number`
+  - `diabetesMed` → `diabetes_med`
+  - All hyphenated medication columns converted to underscores
+    (hyphens cause errors with Python dot notation)
+- Saved final cleaned dataset back to `data/processed/`
+
+**Mistakes & Corrections:**
+- `df.dtypes.value_counts()` returned fragmented category counts instead
+  of a clean summary — switched to `df.dtypes.astype(str).value_counts()`
+  to group dtypes correctly before counting
+- Initially missed `diabetesMed` in the rename — caught it after reviewing
+  the full column list and standardized to `diabetes_med`
 
 ---
 

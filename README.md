@@ -54,7 +54,7 @@ healthcare-readmission-analysis/
 | 2 | Load & inspect data — shape, types, nulls, value counts | ✅ Done |
 | 3 | Data cleaning pt. 1 — missing values, duplicates, errors | ✅ Done |
 | 4 | Data cleaning pt. 2 — types, renaming, formatting | ✅ Done |
-| 5 | EDA — distributions, basic charts | 🔲 |
+| 5 | EDA — distributions, basic charts | ✅ Done |
 | 6 | Deeper EDA — feature vs readmission relationships | 🔲 |
 | 7 | Feature planning — notes, ideas, no heavy coding | 🔲 |
 | 8 | Feature engineering — age groups, visit counts, risk flags | 🔲 |
@@ -82,9 +82,19 @@ healthcare-readmission-analysis/
 ---
 
 ## 🔍 Key Findings
-*(To be filled in as analysis progresses)*
+*(Updated as analysis progresses)*
 
-- TBD after EDA
+- Dataset is imbalanced — majority of patients were NOT readmitted (54,864 NO
+  vs 11,357 readmitted within 30 days)
+- `[70-80)` age group has the highest hospital encounters and readmissions
+- Most patients stay ~3 days (right skewed distribution)
+- Female patients have higher raw readmission counts than male
+- Average patient is on ~14 medications suggesting complex health conditions
+- Average patient has ~50 lab procedures per stay
+- Class imbalance in `<30` readmissions present across every age group —
+  will need to address during modeling (SMOTE or class weighting)
+
+
 - TBD after modeling
 
 ---
@@ -148,6 +158,31 @@ healthcare-readmission-analysis/
   to group dtypes correctly before counting
 - Initially missed `diabetesMed` in the rename — caught it after reviewing
   the full column list and standardized to `diabetes_med`
+
+**Day 5:**
+- Created `02_eda.ipynb` and loaded cleaned dataset
+- Built 6 exploratory charts:
+  - Readmission distribution — confirmed class imbalance (NO >> >30 >> <30)
+  - Age distribution — `[70-80)` is the dominant age group
+  - Time in hospital — right skewed, most patients stay ~3 days
+  - Readmission by age — older patients (50-90) dominate all readmission classes
+  - Readmission by gender — females have higher raw readmission counts
+  - Number of medications — peaks around 14 per patient
+  - Number of lab procedures — peaks around 50 per patient
+- All charts saved to `outputs/charts/`
+
+**Mistakes & Corrections:**
+- I made a simple mistake when using `seaborn`. FutureWarning appeared on histogram charts due to compatibility
+  issue between installed seaborn and pandas versions. I fixed it by upgrading
+  seaborn to latest version via `pip install --upgrade seaborn`, then
+  restarting the Jupyter kernel and rerunning all cells
+- Age distribution chart initially ordered by frequency instead of natural
+  age sequence — fixed by explicitly defining `age_order` list to force
+  chronological ordering `[0-10)` through `[90-100)`, which is more
+  clinically meaningful and accurate
+- Misidentified time in hospital distribution as left skewed — corrected
+  to right skewed after reviewing: bulk of patients cluster at 1-4 days
+  with a long tail extending toward longer stays
 
 ---
 

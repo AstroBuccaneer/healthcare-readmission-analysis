@@ -180,6 +180,20 @@ healthcare-readmission-analysis/
   - Number of lab procedures — peaks around 50 per patient
 - All charts saved to `outputs/charts/`
 
+**Mistakes & Corrections:**
+- I made a simple mistake when using `seaborn`. FutureWarning appeared on histogram charts due to compatibility
+  issue between installed seaborn and pandas versions. I fixed it by upgrading
+  seaborn to latest version via `pip install --upgrade seaborn`, then
+  restarting the Jupyter kernel and rerunning all cells
+- Age distribution chart initially ordered by frequency instead of natural
+  age sequence — fixed by explicitly defining `age_order` list to force
+  chronological ordering `[0-10)` through `[90-100)`, which is more
+  clinically meaningful and accurate
+- Misidentified time in hospital distribution as left skewed — corrected
+  to right skewed after reviewing: bulk of patients cluster at 1-4 days
+  with a long tail extending toward longer stays
+
+
 **Day 6:**
 - Continued in `02_eda.ipynb` with deeper feature vs readmission analysis
 - Built 5 deeper EDA charts:
@@ -207,18 +221,6 @@ healthcare-readmission-analysis/
   separately for each readmission class rather than trying to read everything
   at once
 
-**Mistakes & Corrections:**
-- I made a simple mistake when using `seaborn`. FutureWarning appeared on histogram charts due to compatibility
-  issue between installed seaborn and pandas versions. I fixed it by upgrading
-  seaborn to latest version via `pip install --upgrade seaborn`, then
-  restarting the Jupyter kernel and rerunning all cells
-- Age distribution chart initially ordered by frequency instead of natural
-  age sequence — fixed by explicitly defining `age_order` list to force
-  chronological ordering `[0-10)` through `[90-100)`, which is more
-  clinically meaningful and accurate
-- Misidentified time in hospital distribution as left skewed — corrected
-  to right skewed after reviewing: bulk of patients cluster at 1-4 days
-  with a long tail extending toward longer stays
 
 ---
 

@@ -57,7 +57,7 @@ healthcare-readmission-analysis/
 | 5 | EDA — distributions, basic charts | ✅ Done |
 | 6 | Deeper EDA — feature vs readmission relationships | ✅ Done |
 | 7 | Feature planning — notes, ideas, no heavy coding | ✅ Done |
-| 8 | Feature engineering — age groups, visit counts, risk flags | 🔲 |
+| 8 | Feature engineering — age groups, visit counts, risk flags | ✅ Done |
 | 9 | First model — scikit-learn baseline | 🔲 |
 | 10 | Model evaluation — accuracy, precision, recall | 🔲 |
 | 11 | Model improvement — new features or different model | 🔲 |
@@ -71,13 +71,16 @@ healthcare-readmission-analysis/
 - **Source:** UCI ML Repository — Diabetes 130-US Hospitals
 - **Original shape:** 101,766 rows x 50 columns
 - **Cleaned shape:** 101,766 rows x 48 columns
+- **Feature engineered shape:** 101,766 rows x 47 columns
 - **Final dtypes:** 29 category, 13 int64, 6 object
-- **Target:** `readmitted` — whether a patient was readmitted 
-  (<30 days, >30 days, or No)
-- **Class distribution:**
+- **Original target:** `readmitted` — NO, >30, <30
   - NO: 54,864
   - >30: 35,545
   - <30: 11,357
+- **Model target:** `readmitted_binary` — 1 if readmitted within 30 days, 0 otherwise
+  - Not readmitted within 30 days: 90,409 (88.84%)
+  - Readmitted within 30 days: 11,357 (11.16%)
+- **Readmission rate:** 11.16% — significantly imbalanced dataset
 
 ---
 
@@ -105,6 +108,12 @@ healthcare-readmission-analysis/
   - Feature engineering plan established — new features to create:
   `age_numeric`, `age_group`, `total_visits`, `high_risk_flag`,
   `readmitted_binary`
+  - 5 new features engineered — `age_numeric`, `age_group`, `total_visits`,
+  `high_risk_flag`, `readmitted_binary`
+- 8,210 patients (~8%) flagged as high risk based on long stay and
+  high medication count
+- 50% of patients have 0 prior visits — first time or no recorded history
+- Max of 80 total visits for a single patient — extreme utilizers present
 
 
 - TBD after modeling
@@ -245,6 +254,31 @@ healthcare-readmission-analysis/
 
 **Mistakes & Corrections:**
 - No errors today — planning and documentation day only
+
+**Day 8:**
+- Created `03_feature_engineering_modeling.ipynb`
+- Loaded cleaned dataset from `data/processed/diabetes_cleaned.csv`
+- Engineered 5 new features:
+  - `age_numeric` — converted age brackets to midpoint numeric values
+    (e.g. `[70-80)` → 75) so model understands age as ordered number
+  - `age_group` — simplified buckets: Young (0-40), Middle (40-60),
+    Senior (60-80), Elderly (80+)
+  - `total_visits` — sum of `number_inpatient + number_outpatient +
+    number_emergency` to capture overall healthcare utilization
+  - `high_risk_flag` — binary flag: 1 if `time_in_hospital > 7` AND
+    `num_medications > 20`, combines two strongest EDA signals
+  - `readmitted_binary` — binary target: 1 if readmitted within 30 days
+- Dropped 6 columns: `encounter_id`, `patient_number`, `diag_1/2/3`,
+  `medical_specialty`
+- Final shape: 101,766 rows x 47 columns
+- Readmission rate confirmed at 11.16% — significant class imbalance
+- Saved model ready dataset to `data/processed/diabetes_features.csv`
+
+**Mistakes & Corrections:**
+- Made a silly mistake and used hardcoded full file path and wrong filename
+  `diabetes_data.csv` — fixed by switching to relative path
+  `../data/processed/diabetes_cleaned.csv`. Relative paths are portable
+  and work on any machine, hardcoded paths do not
 
 ---
 

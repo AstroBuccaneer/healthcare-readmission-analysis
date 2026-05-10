@@ -58,7 +58,7 @@ healthcare-readmission-analysis/
 | 6 | Deeper EDA — feature vs readmission relationships | ✅ Done |
 | 7 | Feature planning — notes, ideas, no heavy coding | ✅ Done |
 | 8 | Feature engineering — age groups, visit counts, risk flags | ✅ Done |
-| 9 | First model — scikit-learn baseline | 🔲 |
+| 9 | First model — scikit-learn baseline | ✅ Done |
 | 10 | Model evaluation — accuracy, precision, recall | 🔲 |
 | 11 | Model improvement — new features or different model | 🔲 |
 | 12 | Insights & storytelling — key findings | 🔲 |
@@ -114,6 +114,12 @@ healthcare-readmission-analysis/
   high medication count
 - 50% of patients have 0 prior visits — first time or no recorded history
 - Max of 80 total visits for a single patient — extreme utilizers present
+- Baseline Logistic Regression achieves ROC AUC of 0.64 — better than
+  random guessing, room for improvement on Day 11
+- Recall of 48% on readmitted class — catching nearly half of actual
+  readmissions with a simple baseline model
+- In healthcare context recall matters more than precision — missing a
+  true readmission is more costly than a false alarm
 
 
 - TBD after modeling
@@ -121,15 +127,26 @@ healthcare-readmission-analysis/
 ---
 
 ## 🤖 Model Results
-*(To be filled in — Day 9–11)*
 
+### Baseline — Logistic Regression
 | Metric | Score |
 |--------|-------|
-| Accuracy | TBD |
-| Precision | TBD |
-| Recall | TBD |
-| F1 Score | TBD |
+| Accuracy | 68% |
+| ROC AUC | 0.64 |
+| Precision (readmitted) | 17% |
+| Recall (readmitted) | 48% |
+| F1 Score (readmitted) | 0.25 |
 
+**Confusion Matrix:**
+| | Predicted 0 | Predicted 1 |
+|---|---|---|
+| **Actual 0** | 12,784 (TN) | 5,299 (FP) |
+| **Actual 1** | 1,172 (FN) | 1,099 (TP) |
+
+- Baseline model shows real predictive power above random guessing
+- Recall of 48% means catching nearly half of actual readmissions
+- False negatives are the most costly error in healthcare context
+- Model will be improved on Day 11
 ---
 
 ## 💡 Insights & Business Value
@@ -279,6 +296,37 @@ healthcare-readmission-analysis/
   `diabetes_data.csv` — fixed by switching to relative path
   `../data/processed/diabetes_cleaned.csv`. Relative paths are portable
   and work on any machine, hardcoded paths do not
+
+  **Day 9:**
+- Built baseline Logistic Regression model using 11 features
+- Selected features based on EDA findings:
+  - `time_in_hospital`, `num_lab_procedures`, `num_procedures`,
+    `num_medications`, `number_outpatient`, `number_emergency`,
+    `number_inpatient`, `number_diagnoses`, `age_numeric`,
+    `total_visits`, `high_risk_flag`
+- Scaled features using `StandardScaler` — required for Logistic Regression
+- Used `stratify=y` in train/test split to maintain 11.16% class balance
+  in both train and test sets
+- Used `class_weight='balanced'` to handle class imbalance
+- Split: 80% train (81,412 samples), 20% test (20,354 samples)
+- Model trained and evaluated successfully
+
+**Baseline Results:**
+- Accuracy: 68%
+- ROC AUC: 0.64
+- Recall (readmitted class): 48%
+- Precision (readmitted class): 17%
+- True Positives: 1,099 | False Negatives: 1,172
+- True Negatives: 12,784 | False Positives: 5,299
+
+**Mistakes & Corrections:**
+- Noted that accuracy alone is a misleading metric for imbalanced datasets
+  — a model predicting 0 for everything would score 88% accuracy but have
+  zero predictive value. ROC AUC and recall are more meaningful metrics
+  for this problem
+- `stratify=y` used in train/test split to ensure class balance is
+  maintained — without this one split could have more readmissions than
+  the other which would skew results
 
 ---
 

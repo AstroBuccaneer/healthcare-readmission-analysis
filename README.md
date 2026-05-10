@@ -56,7 +56,7 @@ healthcare-readmission-analysis/
 | 4 | Data cleaning pt. 2 — types, renaming, formatting | ✅ Done |
 | 5 | EDA — distributions, basic charts | ✅ Done |
 | 6 | Deeper EDA — feature vs readmission relationships | ✅ Done |
-| 7 | Feature planning — notes, ideas, no heavy coding | 🔲 |
+| 7 | Feature planning — notes, ideas, no heavy coding | ✅ Done |
 | 8 | Feature engineering — age groups, visit counts, risk flags | 🔲 |
 | 9 | First model — scikit-learn baseline | 🔲 |
 | 10 | Model evaluation — accuracy, precision, recall | 🔲 |
@@ -102,6 +102,9 @@ healthcare-readmission-analysis/
   dataset composition — proportional analysis needed for meaningful comparison
 - Key features identified for modeling: `time_in_hospital`,
   `num_medications`, `num_lab_procedures`
+  - Feature engineering plan established — new features to create:
+  `age_numeric`, `age_group`, `total_visits`, `high_risk_flag`,
+  `readmitted_binary`
 
 
 - TBD after modeling
@@ -221,6 +224,27 @@ healthcare-readmission-analysis/
   separately for each readmission class rather than trying to read everything
   at once
 
+**Day 7:**
+- Light planning day — no heavy coding
+- Reviewed all EDA findings from Days 5 and 6
+- Identified strong existing features for modeling:
+  - `time_in_hospital`, `num_medications`, `num_lab_procedures`
+  - `number_inpatient`, `number_emergency`, `number_outpatient`
+  - `age`, `a1c_result`, `max_glu_serum`, `diabetes_med`, `change`
+- Planned new features to engineer on Day 8:
+  - `age_numeric` — convert age brackets to numeric midpoint values
+  - `age_group` — simplified buckets (Young, Middle, Senior, Elderly)
+  - `total_visits` — sum of all prior visit types
+  - `high_risk_flag` — binary flag for high risk patients
+  - `readmitted_binary` — simplified binary target variable
+- Identified columns to drop before modeling:
+  - `encounter_id`, `patient_number` — ID columns, no predictive value
+  - `diag_1`, `diag_2`, `diag_3` — 700+ unique values, too complex
+    for baseline model, revisit on Day 11 if time allows
+  - `medical_specialty` — 73 unique values, needs grouping first
+
+**Mistakes & Corrections:**
+- No errors today — planning and documentation day only
 
 ---
 

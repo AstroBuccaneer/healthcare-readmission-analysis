@@ -55,7 +55,7 @@ healthcare-readmission-analysis/
 | 3 | Data cleaning pt. 1 — missing values, duplicates, errors | ✅ Done |
 | 4 | Data cleaning pt. 2 — types, renaming, formatting | ✅ Done |
 | 5 | EDA — distributions, basic charts | ✅ Done |
-| 6 | Deeper EDA — feature vs readmission relationships | 🔲 |
+| 6 | Deeper EDA — feature vs readmission relationships | ✅ Done |
 | 7 | Feature planning — notes, ideas, no heavy coding | 🔲 |
 | 8 | Feature engineering — age groups, visit counts, risk flags | 🔲 |
 | 9 | First model — scikit-learn baseline | 🔲 |
@@ -93,6 +93,15 @@ healthcare-readmission-analysis/
 - Average patient has ~50 lab procedures per stay
 - Class imbalance in `<30` readmissions present across every age group —
   will need to address during modeling (SMOTE or class weighting)
+  - Longer hospital stays correlate with higher readmission risk
+- Higher medication counts correlate with higher readmission risk —
+  `<30` patients average 16+ medications vs 14-16 for non-readmitted
+- Higher lab procedure counts generally correlate with readmission risk
+  but outliers in `NO` class suggest it is not a standalone predictor
+- Caucasian patients dominate all readmission classes reflecting overall
+  dataset composition — proportional analysis needed for meaningful comparison
+- Key features identified for modeling: `time_in_hospital`,
+  `num_medications`, `num_lab_procedures`
 
 
 - TBD after modeling
@@ -170,6 +179,33 @@ healthcare-readmission-analysis/
   - Number of medications — peaks around 14 per patient
   - Number of lab procedures — peaks around 50 per patient
 - All charts saved to `outputs/charts/`
+
+**Day 6:**
+- Continued in `02_eda.ipynb` with deeper feature vs readmission analysis
+- Built 5 deeper EDA charts:
+  - Time in hospital vs readmission (boxplot)
+  - Number of medications vs readmission (boxplot)
+  - Number of lab procedures vs readmission (boxplot)
+  - Readmission by race (countplot)
+  - Average time in hospital by readmission class (aggregation barplot)
+  - Average medications by readmission class (aggregation barplot)
+- Key features identified as strong readmission predictors:
+  - `time_in_hospital` — longer stays correlate with higher readmission risk
+  - `num_medications` — more medications correlate with higher readmission risk
+  - `num_lab_procedures` — higher lab counts correlate with risk but with nuance
+- Noted `Unknown` category in race column — patients who did not disclose race
+- All charts saved to `outputs/charts/`
+
+**Mistakes & Corrections:**
+- Got `NameError: name 'plt' is not defined` when running boxplot cell —
+  caused by restarting the kernel earlier which cleared all variables from
+  memory. Fixed by rerunning Cell 1 imports and Cell 2 data loading before
+  proceeding. Reminder: always rerun imports and data load cells after
+  a kernel restart
+- Initially unsure how to interpret the lab procedures boxplot — worked
+  through it systematically by breaking down median, spread, and outliers
+  separately for each readmission class rather than trying to read everything
+  at once
 
 **Mistakes & Corrections:**
 - I made a simple mistake when using `seaborn`. FutureWarning appeared on histogram charts due to compatibility

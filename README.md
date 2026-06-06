@@ -61,7 +61,7 @@ healthcare-readmission-analysis/
 | 9 | First model — scikit-learn baseline | ✅ Done |
 | 10 | Model evaluation — accuracy, precision, recall | ✅ Done |
 | 11 | Improve model — new features, different model | ✅ Done |
-| 12 | Insights & storytelling — key findings | 🔲 |
+| 12 | Insights & storytelling — key findings, business value | ✅ Done |
 | 13 | GitHub + README polish | 🔲 |
 | 14 | Final polish, resume update, practice walkthrough | 🔲 |
 
@@ -432,6 +432,30 @@ risk so hospitals can intervene proactively before discharge.
   up to 48% and AUC to 0.6482
 - Learned that accuracy alone is never sufficient for imbalanced
   datasets — always evaluate ROC AUC and recall on minority class
+
+  **Day 12:**
+- Wrote full insights and storytelling section in notebook
+- Summarized findings in plain business language for non-technical readers
+- Identified 4 concrete business value opportunities:
+  1. Early intervention targeting based on inpatient history
+  2. Resource allocation for discharge planning
+  3. Outpatient program investment as protective factor
+  4. Cost reduction through proactive readmission prevention
+- Documented limitations:
+  - Dataset from 1999-2008, treatment patterns may have changed
+  - Diagnosis codes not used — rich clinical signal left on table
+  - Model explains ~65% of variance, room to improve
+- Documented improvement roadmap:
+  - SMOTE oversampling for class imbalance
+  - XGBoost or gradient boosting
+  - Diagnosis code encoding into clinical categories
+  - GridSearchCV hyperparameter tuning
+- Added insights and business value section to project README
+
+**Mistakes & Corrections:**
+- No major errors today — insights and documentation day
+- Learned that storytelling in plain language is as important as
+  the technical work — recruiters read the README before the notebooks
 ---
 
 ## ▶️ How to Run

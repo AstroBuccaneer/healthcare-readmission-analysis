@@ -63,7 +63,7 @@ healthcare-readmission-analysis/
 | 11 | Improve model — new features, different model | ✅ Done |
 | 12 | Insights & storytelling — key findings, business value | ✅ Done |
 | 13 | GitHub + README polish | ✅ Done |
-| 14 | Final polish, resume update, practice walkthrough | 🔲 |
+| 14 | Final polish | ✅ Done |
 
 ---
 

@@ -60,7 +60,7 @@ healthcare-readmission-analysis/
 | 8 | Feature engineering — age groups, visit counts, risk flags | ✅ Done |
 | 9 | First model — scikit-learn baseline | ✅ Done |
 | 10 | Model evaluation — accuracy, precision, recall | ✅ Done |
-| 11 | Model improvement — new features or different model | 🔲 |
+| 11 | Improve model — new features, different model | ✅ Done |
 | 12 | Insights & storytelling — key findings | 🔲 |
 | 13 | GitHub + README polish | 🔲 |
 | 14 | Final polish, resume update, practice walkthrough | 🔲 |
@@ -380,6 +380,28 @@ healthcare-readmission-analysis/
 - No major errors today — ensured `outputs/model_results/` folder
   existed before saving charts using `os.makedirs()` with
   `exist_ok=True` to avoid FileNotFoundError
+
+  **Day 11:**
+- Expanded feature set from 11 to 16 features by adding:
+  - `age_group`, `diabetes_med`, `change`
+- Encoded categorical features using `pd.get_dummies`
+- Trained and compared 4 models total:
+  - Logistic Regression baseline — AUC 0.6401
+  - Logistic Regression v2 (16 features) — AUC 0.6438
+  - Random Forest v1 — AUC 0.5977 (overfit)
+  - Random Forest v2 tuned — AUC 0.6482 (best)
+- Best model saved to `outputs/model_results/best_model_rf_v2.pkl`
+
+**Mistakes & Corrections:**
+- Random Forest v1 achieved 89% accuracy but only 1% recall on
+  readmitted class — model was essentially ignoring the minority class
+  entirely despite `class_weight='balanced'`. This is a classic
+  imbalanced dataset trap — high accuracy is misleading when one class
+  dominates. Fixed by tuning with `max_depth=10` and
+  `min_samples_leaf=10` to reduce overfitting, bringing recall back
+  up to 48% and AUC to 0.6482
+- Learned that accuracy alone is never sufficient for imbalanced
+  datasets — always evaluate ROC AUC and recall on minority class
 ---
 
 ## ▶️ How to Run

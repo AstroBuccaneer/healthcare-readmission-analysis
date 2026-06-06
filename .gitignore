@@ -1,0 +1,25 @@
+# Data files — raw data not pushed to GitHub
+data/raw/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment files
+.env
+venv/
+env/
+
+# Model pickle files (large)
+*.pkl
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/

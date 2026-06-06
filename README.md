@@ -62,7 +62,7 @@ healthcare-readmission-analysis/
 | 10 | Model evaluation — accuracy, precision, recall | ✅ Done |
 | 11 | Improve model — new features, different model | ✅ Done |
 | 12 | Insights & storytelling — key findings, business value | ✅ Done |
-| 13 | GitHub + README polish | 🔲 |
+| 13 | GitHub + README polish | ✅ Done |
 | 14 | Final polish, resume update, practice walkthrough | 🔲 |
 
 ---
@@ -181,6 +181,10 @@ healthcare-readmission-analysis/
 - Further gains would require SMOTE oversampling or deeper feature
   engineering on diagnosis codes
 
+> Note: Trained model file (`best_model_rf_v2.pkl`) is excluded from 
+> the repository due to file size. Re-run `03_feature_engineering_modeling.ipynb` 
+> to retrain and save the model locally.
+
 ## 💡 Insights & Business Value
 
 ### The Problem
@@ -226,11 +230,12 @@ risk so hospitals can intervene proactively before discharge.
 
 **Day 2:**
 - Loaded dataset with pandas
-- Shape: [ADD YOUR SHAPE HERE] rows, [ADD] columns
+- Shape: 101,766 rows x 50 columns
 - No duplicate rows found
-- Missing values found in: [LIST COLUMNS WITH NULLS HERE]
-- Target column `readmitted` value counts: [ADD COUNTS]
-- First impression: [WRITE 1-2 SENTENCES ABOUT WHAT LOOKS MESSY OR INTERESTING]
+- Missing values found in: max_glu_serum (96,420), A1Cresult (84,748)
+- Target column `readmitted` value counts: NO: 54,864 | >30: 35,545 | <30: 11,357
+- First impression: Dataset had significant missing values in lab result columns
+  and used `?` as a placeholder for unknown values across multiple columns
 
 **Day 3:**
 - Replaced all `?` placeholders with NaN
@@ -359,7 +364,7 @@ risk so hospitals can intervene proactively before discharge.
   `../data/processed/diabetes_cleaned.csv`. Relative paths are portable
   and work on any machine, hardcoded paths do not
 
-  **Day 9:**
+**Day 9:**
 - Built baseline Logistic Regression model using 11 features
 - Selected features based on EDA findings:
   - `time_in_hospital`, `num_lab_procedures`, `num_procedures`,
@@ -411,7 +416,7 @@ risk so hospitals can intervene proactively before discharge.
   existed before saving charts using `os.makedirs()` with
   `exist_ok=True` to avoid FileNotFoundError
 
-  **Day 11:**
+**Day 11:**
 - Expanded feature set from 11 to 16 features by adding:
   - `age_group`, `diabetes_med`, `change`
 - Encoded categorical features using `pd.get_dummies`
@@ -433,7 +438,7 @@ risk so hospitals can intervene proactively before discharge.
 - Learned that accuracy alone is never sufficient for imbalanced
   datasets — always evaluate ROC AUC and recall on minority class
 
-  **Day 12:**
+**Day 12:**
 - Wrote full insights and storytelling section in notebook
 - Summarized findings in plain business language for non-technical readers
 - Identified 4 concrete business value opportunities:
@@ -456,6 +461,7 @@ risk so hospitals can intervene proactively before discharge.
 - No major errors today — insights and documentation day
 - Learned that storytelling in plain language is as important as
   the technical work — recruiters read the README before the notebooks
+
 ---
 
 ## ▶️ How to Run
@@ -468,3 +474,4 @@ pip install -r requirements.txt
 
 # Open notebooks
 jupyter notebook
+```

@@ -113,8 +113,8 @@ healthcare-readmission-analysis/
 - Max of 80 total visits for a single patient — extreme utilizers present
 
 **Modeling Findings:**
-- Baseline Logistic Regression achieves ROC AUC of 0.64 — better than
-  random guessing, room for improvement on Day 11
+- Baseline Logistic Regression achieves ROC AUC of 0.6401 — better than
+  random guessing, room for improvement
 - Recall of 48% on readmitted class — catching nearly half of actual
   readmissions with a simple baseline model
 - In healthcare context recall matters more than precision — missing a
@@ -125,20 +125,32 @@ healthcare-readmission-analysis/
   engagement reduces readmission risk
 - High value use case identified: target patients with high inpatient
   history and low outpatient engagement for intervention programs
+- Best model: Random Forest v2 — AUC 0.6482 after tuning
+- Random Forest v1 was overfit (89% accuracy, 1% recall) — tuning with
+  `max_depth=10` and `min_samples_leaf=10` fixed minority class detection
 
 ---
 
 ## 🤖 Model Results
 
-### Baseline — Logistic Regression
+### Model Comparison
+| Model | Accuracy | ROC AUC | Recall (readmitted) | F1 (readmitted) |
+|-------|----------|---------|---------------------|-----------------|
+| Logistic Regression baseline | 68% | 0.6401 | 48% | 0.25 |
+| Logistic Regression v2 | 68% | 0.6438 | 49% | 0.25 |
+| Random Forest v1 | 89% | 0.5977 | 1% | 0.03 |
+| Random Forest v2 (tuned) | 69% | **0.6482** | 48% | 0.25 |
+
+### Best Model — Random Forest v2 (tuned)
 | Metric | Score |
 |--------|-------|
-| Accuracy | 68% |
-| ROC AUC | 0.64 |
+| Accuracy | 69% |
+| ROC AUC | 0.6482 |
 | Precision (readmitted) | 17% |
 | Recall (readmitted) | 48% |
 | F1 Score (readmitted) | 0.25 |
 
+### Baseline — Logistic Regression
 **Confusion Matrix:**
 | | Predicted 0 | Predicted 1 |
 |---|---|---|
@@ -158,12 +170,16 @@ healthcare-readmission-analysis/
 - Confusion matrix saved to `outputs/model_results/confusion_matrix.png`
 - ROC curve saved to `outputs/model_results/roc_curve.png`
 - Feature importance saved to `outputs/model_results/feature_importance.png`
+- Best model saved to `outputs/model_results/best_model_rf_v2.pkl`
 
-- Baseline model shows real predictive power above random guessing
-- Recall of 48% means catching nearly half of actual readmissions
-- False negatives are the most costly error in healthcare context
-- Model will be improved on Day 11
----
+**Key Takeaways:**
+- Random Forest v1 overfitting shows high accuracy alone is misleading
+  on imbalanced datasets — always check recall on minority class
+- Incremental AUC improvements achieved through iteration and tuning
+- False negatives are the most costly error in healthcare context —
+  a missed readmission means no intervention for a high risk patient
+- Further gains would require SMOTE oversampling or deeper feature
+  engineering on diagnosis codes
 
 ## 💡 Insights & Business Value
 *(To be filled in — Day 12)*

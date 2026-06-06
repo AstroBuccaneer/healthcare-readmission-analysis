@@ -59,7 +59,7 @@ healthcare-readmission-analysis/
 | 7 | Feature planning — notes, ideas, no heavy coding | ✅ Done |
 | 8 | Feature engineering — age groups, visit counts, risk flags | ✅ Done |
 | 9 | First model — scikit-learn baseline | ✅ Done |
-| 10 | Model evaluation — accuracy, precision, recall | 🔲 |
+| 10 | Model evaluation — accuracy, precision, recall | ✅ Done |
 | 11 | Model improvement — new features or different model | 🔲 |
 | 12 | Insights & storytelling — key findings | 🔲 |
 | 13 | GitHub + README polish | 🔲 |
@@ -85,8 +85,8 @@ healthcare-readmission-analysis/
 ---
 
 ## 🔍 Key Findings
-*(Updated as analysis progresses)*
 
+**Data & EDA Findings:**
 - Dataset is imbalanced — majority of patients were NOT readmitted (54,864 NO
   vs 11,357 readmitted within 30 days)
 - `[70-80)` age group has the highest hospital encounters and readmissions
@@ -95,34 +95,36 @@ healthcare-readmission-analysis/
 - Average patient is on ~14 medications suggesting complex health conditions
 - Average patient has ~50 lab procedures per stay
 - Class imbalance in `<30` readmissions present across every age group —
-  will need to address during modeling (SMOTE or class weighting)
-  - Longer hospital stays correlate with higher readmission risk
+  addressed with `class_weight='balanced'` in model
+- Longer hospital stays correlate with higher readmission risk
 - Higher medication counts correlate with higher readmission risk —
   `<30` patients average 16+ medications vs 14-16 for non-readmitted
 - Higher lab procedure counts generally correlate with readmission risk
   but outliers in `NO` class suggest it is not a standalone predictor
 - Caucasian patients dominate all readmission classes reflecting overall
   dataset composition — proportional analysis needed for meaningful comparison
-- Key features identified for modeling: `time_in_hospital`,
-  `num_medications`, `num_lab_procedures`
-  - Feature engineering plan established — new features to create:
-  `age_numeric`, `age_group`, `total_visits`, `high_risk_flag`,
-  `readmitted_binary`
-  - 5 new features engineered — `age_numeric`, `age_group`, `total_visits`,
+
+**Feature Engineering Findings:**
+- 5 new features engineered — `age_numeric`, `age_group`, `total_visits`,
   `high_risk_flag`, `readmitted_binary`
 - 8,210 patients (~8%) flagged as high risk based on long stay and
   high medication count
 - 50% of patients have 0 prior visits — first time or no recorded history
 - Max of 80 total visits for a single patient — extreme utilizers present
+
+**Modeling Findings:**
 - Baseline Logistic Regression achieves ROC AUC of 0.64 — better than
   random guessing, room for improvement on Day 11
 - Recall of 48% on readmitted class — catching nearly half of actual
   readmissions with a simple baseline model
 - In healthcare context recall matters more than precision — missing a
   true readmission is more costly than a false alarm
-
-
-- TBD after modeling
+- `number_inpatient` is the strongest predictor of readmission risk —
+  prior hospital history is the biggest signal
+- `number_outpatient` is a protective factor — active outpatient
+  engagement reduces readmission risk
+- High value use case identified: target patients with high inpatient
+  history and low outpatient engagement for intervention programs
 
 ---
 
@@ -142,6 +144,20 @@ healthcare-readmission-analysis/
 |---|---|---|
 | **Actual 0** | 12,784 (TN) | 5,299 (FP) |
 | **Actual 1** | 1,172 (FN) | 1,099 (TP) |
+
+**Feature Importance (Top Predictors):**
+| Feature | Direction | Insight |
+|---------|-----------|---------|
+| `number_inpatient` | Positive ↑ | More prior inpatient visits = higher risk |
+| `number_outpatient` | Negative ↓ | More outpatient visits = lower risk |
+| `time_in_hospital` | Positive ↑ | Longer stays = higher risk |
+| `num_medications` | Positive ↑ | More medications = higher risk |
+| `high_risk_flag` | Positive ↑ | Combined risk flag = higher risk |
+
+**Evaluation Charts:**
+- Confusion matrix saved to `outputs/model_results/confusion_matrix.png`
+- ROC curve saved to `outputs/model_results/roc_curve.png`
+- Feature importance saved to `outputs/model_results/feature_importance.png`
 
 - Baseline model shows real predictive power above random guessing
 - Recall of 48% means catching nearly half of actual readmissions
@@ -328,6 +344,26 @@ healthcare-readmission-analysis/
   maintained — without this one split could have more readmissions than
   the other which would skew results
 
+**Day 10:**
+- Visualized confusion matrix using `ConfusionMatrixDisplay`
+- Plotted ROC curve — AUC 0.64 confirmed visually, curve bows above
+  diagonal but stays relatively close, significant room to improve
+- Explored feature importance using Logistic Regression coefficients:
+  - Strongest positive predictor: `number_inpatient` — more prior
+    inpatient visits = higher readmission risk
+  - Strongest negative predictor: `number_outpatient` — more outpatient
+    visits = lower readmission risk (acts as protective factor)
+- All evaluation charts saved to `outputs/model_results/`
+
+**Key Insight from Feature Importance:**
+- Patients with high inpatient history and low outpatient engagement
+  are the highest risk group — hospitals could use this to target
+  intervention programs proactively
+
+**Mistakes & Corrections:**
+- No major errors today — ensured `outputs/model_results/` folder
+  existed before saving charts using `os.makedirs()` with
+  `exist_ok=True` to avoid FileNotFoundError
 ---
 
 ## ▶️ How to Run

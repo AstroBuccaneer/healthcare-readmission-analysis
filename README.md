@@ -182,7 +182,37 @@ healthcare-readmission-analysis/
   engineering on diagnosis codes
 
 ## 💡 Insights & Business Value
-*(To be filled in — Day 12)*
+
+### The Problem
+Hospital readmissions within 30 days are costly for both patients and 
+healthcare systems. This project identifies which patients are at highest 
+risk so hospitals can intervene proactively before discharge.
+
+### What Drives Readmissions
+- **Prior inpatient visits** are the strongest predictor — patients with
+  a history of hospital admissions are significantly more likely to return
+- **Longer hospital stays** (4+ days) correlate with higher readmission risk
+- **Higher medication counts** (16+ medications) indicate more complex
+  conditions and higher risk
+- **Outpatient engagement is protective** — patients who regularly see
+  doctors outside the hospital are less likely to be readmitted
+
+### Business Value
+1. **Early intervention** — Flag high risk patients before discharge for
+   follow up programs based on inpatient history and medication count
+2. **Resource allocation** — Focus discharge planning on patients staying
+   4+ days with 16+ medications
+3. **Outpatient investment** — Data supports investing in outpatient follow
+   up programs as a readmission reduction strategy
+4. **Cost reduction** — Even a small reduction in readmission rate has
+   significant financial impact on hospital systems
+
+### Limitations & Next Steps
+- Diagnosis codes not yet used — contain rich clinical information that
+  could significantly improve predictions
+- Dataset from 1999-2008 — treatment patterns may have changed
+- Future improvements: SMOTE oversampling, XGBoost, diagnosis code
+  encoding, hyperparameter tuning with GridSearchCV
 
 ---
 
